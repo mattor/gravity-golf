@@ -1,10 +1,12 @@
+import "../assets/bg-space.jpg"
+
 import { gameWidth, gameHeight } from "../const/Config"
 
 export default class Background {
     constructor({
         name = "Background",
         context,
-        src = "assets/images/bg-space.jpg",
+        src = "./bg-space.jpg",
     } = {}) {
         this.context = context
         this.name = name
