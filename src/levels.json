@@ -1,0 +1,148 @@
+[
+    {
+        "name": "Point Zero",
+        "gridWidth": 2,
+        "gridHeight": 2,
+        "startCol": 0,
+        "startRow": 0,
+        "goalCol": 1,
+        "goalRow": 1,
+        "planets": []
+    },
+    {
+        "name": "Obstructed by Mars",
+        "gridWidth": 3,
+        "gridHeight": 3,
+        "startCol": 0,
+        "startRow": 0,
+        "goalCol": 2,
+        "goalRow": 2,
+        "planets": [
+            {
+                "col": 1,
+                "row": 1,
+                "mass": 6.39E23,
+                "color": "#A00",
+                "name": "Mars"
+            }
+        ]
+    },
+    {
+        "name": "Among Giants",
+        "gridWidth": 2,
+        "gridHeight": 2,
+        "startCol": 0,
+        "startRow": 0,
+        "goalCol": 1,
+        "goalRow": 1,
+        "planets": [
+            {
+                "col": 1,
+                "row": 0,
+                "name": "HD 210277 b",
+                "mass": 12E25
+            },
+            {
+                "col": 0,
+                "row": 1,
+                "name": "HD 217107 b",
+                "mass": 12E25
+            }
+        ]
+    },
+    {
+        "name": "Corridor",
+        "gridWidth": 3,
+        "gridHeight": 2,
+        "startCol": 0,
+        "startRow": 0,
+        "goalCol": 2,
+        "goalRow": 1,
+        "planets": [
+            {
+                "col": 1,
+                "row": 0,
+                "name": "HD 177830 b"
+            },
+            {
+                "col": 2,
+                "row": 0,
+                "name": "Tau Boötis b"
+            },
+            {
+                "col": 0,
+                "row": 1,
+                "name": "Upsilon Andromedae d"
+            },
+            {
+                "col": 1,
+                "row": 1,
+                "name": "Gliese 86 b"
+            }
+        ]
+    },
+    {
+        "name": "Obstructed by Neptune",
+        "gridWidth": 3,
+        "gridHeight": 3,
+        "startCol": 0,
+        "startRow": 0,
+        "goalCol": 2,
+        "goalRow": 2,
+        "planets": [
+            {
+                "col": 1,
+                "row": 1,
+                "mass": 1.024e26,
+                "color": "#00E",
+                "name": "Neptune"
+            }
+        ]
+    },
+    {
+        "name": "Room",
+        "gridWidth": 3,
+        "gridHeight": 3,
+        "startCol": 0,
+        "startRow": 0,
+        "goalCol": 2,
+        "goalRow": 2,
+        "planets": [
+            {
+                "col": 1,
+                "row": 0,
+                "name": "70 Virginis b"
+            },
+            {
+                "col": 2,
+                "row": 0,
+                "name": "55 Cancri b"
+            },
+            {
+                "col": 0,
+                "row": 1,
+                "name": "51 Pegasi b"
+            },
+            {
+                "col": 1,
+                "row": 1,
+                "name": "47 Ursae Majoris b"
+            },
+            {
+                "col": 2,
+                "row": 1,
+                "name": "23 Librae b"
+            },
+            {
+                "col": 0,
+                "row": 2,
+                "name": "16 Cygni Bb"
+            },
+            {
+                "col": 1,
+                "row": 2,
+                "name": "109 Piscium b"
+            }
+        ]
+    }
+]
