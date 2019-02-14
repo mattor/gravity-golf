@@ -7,10 +7,10 @@ import * as keyboard from "../interaction/keyboard"
 import levels from "../levels.json"
 
 // Sprites
-import Background from "../sprites/Background"
-import LevelPoster from "../sprites/LevelPoster"
-import Planet from "../sprites/Planet"
-import Spaceship from "../sprites/Spaceship"
+import Background from "../objects/Background"
+import InfoOverlay from "../objects/InfoOverlay"
+import Planet from "../objects/Planet"
+import Spaceship from "../objects/Spaceship"
 
 export default class Game {
     constructor({
@@ -25,7 +25,7 @@ export default class Game {
         this.score = 0
 
         this.spaceship = new Spaceship({ context })
-        this.levelPoster = new LevelPoster({ context })
+        this.infoOverlay = new InfoOverlay({ context })
 
         this.createLevel(this.currentLevel)
 
@@ -34,10 +34,10 @@ export default class Game {
                 if (this.currentLevel > levels.length - 1) {
                     this.currentLevel = 0
                     this.score = 0
-                    this.levelPoster.score = this.score
+                    this.infoOverlay.score = this.score
                 }
                 this.createLevel(this.currentLevel)
-                this.levelPoster.message = null
+                this.infoOverlay.message = null
                 this.spaceship.isAdjusting = true
                 this.isGameOver = false
                 this.isRunning = false
@@ -47,8 +47,8 @@ export default class Game {
                 this.spaceship.isAdjusting = false
                 this.isRunning = true
                 this.score++
-                this.levelPoster.score = this.score
-                this.levelPoster.message = null
+                this.infoOverlay.score = this.score
+                this.infoOverlay.message = null
             }
         })
     }
@@ -85,7 +85,7 @@ export default class Game {
     }
 
     createLevel(num) {
-        const { context, spaceship, levelPoster } = this
+        const { context, spaceship, infoOverlay } = this
         const level = levels[num]
 
         const gamePaddingX = Config.gameWidth / (level.gridWidth + 1)
@@ -130,17 +130,17 @@ export default class Game {
         spaceship.y = gamePaddingY + level.startRow * yDelta
         this.renderList.push(spaceship)
 
-        // levelPoster
-        levelPoster.levelName = level.name
-        this.renderList.push(levelPoster)
+        // infoOverlay
+        infoOverlay.levelName = `Level ${num + 1}: ${level.name}`
+        this.renderList.push(infoOverlay)
     }
 
     checkCollisions() {
-        const { spaceship, planets, goal, levelPoster, score } = this
+        const { spaceship, planets, goal, infoOverlay, score } = this
 
         // Stop if goal
         if (circlesAreColliding(spaceship, goal)) {
-            levelPoster.message = this.currentLevel === levels.length - 1 ? `Final score: ${score}` : "You got home!"
+            infoOverlay.message = this.currentLevel === levels.length - 1 ? `Final score: ${score}` : "You got home!"
             this.isRunning = false
             this.isGameOver = true
             this.currentLevel++
@@ -150,7 +150,7 @@ export default class Game {
         planets.forEach(planet => {
             // Stop if crash
             if (circlesAreColliding(spaceship, planet)) {
-                levelPoster.message = `You crashed into ${planet.name}`
+                infoOverlay.message = `You crashed into ${planet.name}`
                 this.isRunning = false
                 this.isGameOver = true
                 return

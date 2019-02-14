@@ -1,6 +1,6 @@
 import { gameWidth, gameHeight } from "../const/Config"
 
-export default class LevelPoster {
+export default class InfoOverlay {
     constructor({
         context,
         levelName = "",
@@ -17,16 +17,16 @@ export default class LevelPoster {
         const { context, levelName, score, message } = this
 
         if (levelName) {
-            context.font = "28px sans-serif"
+            context.font = "18px sans-serif"
             context.fillStyle = "#FFF"
-            context.fillText(levelName, 20, 40)
+            context.fillText(levelName, 20, 30)
         }
 
-        context.font = "28px sans-serif"
+        context.font = "18px sans-serif"
         const scoreText = `Score: ${score}`
         const text = context.measureText(scoreText)
         context.fillStyle = "#FFF"
-        context.fillText(scoreText, gameWidth - text.width - 20, 40)
+        context.fillText(scoreText, gameWidth - text.width - 20, 30)
 
         if (message) {
             context.font = "48px sans-serif"

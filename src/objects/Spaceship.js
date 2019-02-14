@@ -8,11 +8,14 @@ function drawTriangle(context, x, y, radius, rotate) {
     const a = ((Math.PI * 2) / sides)
 
     for (let i = 0; i < sides; i++) {
-        context.lineTo(x + radius * Math.cos(a * i + rotate), y + radius * Math.sin(a * i + rotate))
+        context.lineTo(x + radius * Math.cos(a * i + rotate - a), y + radius * Math.sin(a * i + rotate - a))
     }
 
-    context.fillStyle = "#FFF"
+    context.fillStyle = "#000"
+    context.lineWidth = 2
+    context.strokeStyle = "#FFF"
     context.fill()
+    context.stroke()
 }
 
 export default class Spaceship {
@@ -52,7 +55,7 @@ export default class Spaceship {
                 y + Math.sin(launchAngle + Math.PI) * launchLineLength
             )
             context.lineWidth = 4
-            context.strokeStyle = "#FF0"
+            context.strokeStyle = "#00C0E0"
             context.stroke()
         } else if (isDebugging) {
             const isDebuggingLineLength = radius + (5 * force / forceDelta)
