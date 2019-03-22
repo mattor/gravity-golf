@@ -1,4 +1,4 @@
-import { G, earthMass, distScaleFactor, forceMin, forceDelta } from "../const/Config"
+import { G, earthMass, distScaleFactor, momentumMin, momentumDelta } from "../const/Config"
 import { getDistBetween, getAngleBetween } from "../helpers"
 
 function drawTriangle(context, x, y, radius, rotate) {
@@ -25,7 +25,7 @@ export default class Spaceship {
         x,
         y,
         mass = earthMass / 5,
-        launchForce = forceMin,
+        launchMomentum = momentumMin,
         launchAngle = 0,
         isDebugging = false,
     } = {}) {
@@ -33,7 +33,7 @@ export default class Spaceship {
         this.x = x
         this.y = y
         this.mass = mass
-        this.launchForce = launchForce
+        this.launchMomentum = launchMomentum
         this.launchAngle = launchAngle
         this.name = name
         this.isDebugging = isDebugging
@@ -43,9 +43,9 @@ export default class Spaceship {
     }
 
     render() {
-        const { context, x, y, radius, launchAngle, launchForce, isAdjusting, isDebugging, angle, force } = this
+        const { context, x, y, radius, launchAngle, launchMomentum, isAdjusting, isDebugging, angle, momentum } = this
 
-        const launchLineLength = radius + (launchForce / forceDelta)
+        const launchLineLength = radius + (launchMomentum / momentumDelta)
 
         if (isAdjusting) {
             context.beginPath()
@@ -58,7 +58,7 @@ export default class Spaceship {
             context.strokeStyle = "#00C0E0"
             context.stroke()
         } else if (isDebugging) {
-            const isDebuggingLineLength = radius + (5 * force / forceDelta)
+            const isDebuggingLineLength = radius + (5 * momentum / momentumDelta)
 
             context.beginPath()
             context.moveTo(x, y)
@@ -75,31 +75,31 @@ export default class Spaceship {
     }
 
     update(planets) {
-        const { mass, force, angle } = this
+        const { mass, momentum, angle } = this
 
-        let forceTotalX = 0,
-            forceTotalY = 0
+        let momentumTotalX = 0,
+            momentumTotalY = 0
 
         planets.forEach(planet => {
             // Newton's Law of Universal Gravitation
-            // gravityForce = G * m1 * m2 / dist ^ 2
+            // gravitymomentum = G * m1 * m2 / dist ^ 2
 
-            const gravityForce = (distScaleFactor * G * planet.mass * mass) / Math.pow(getDistBetween(this, planet), 2)
+            const gravitymomentum = (distScaleFactor * G * planet.mass * mass) / Math.pow(getDistBetween(this, planet), 2)
             const gravityDirection = getAngleBetween(this, planet)
 
-            // Update total force
-            forceTotalX += gravityForce * Math.cos(gravityDirection)
-            forceTotalY += gravityForce * Math.sin(gravityDirection)
+            // Update total momentum
+            momentumTotalX += gravitymomentum * Math.cos(gravityDirection)
+            momentumTotalY += gravitymomentum * Math.sin(gravityDirection)
         })
 
-        // Add spaceship's momentum to total force
-        forceTotalX += force * Math.cos(angle)
-        forceTotalY += force * Math.sin(angle)
+        // Add spaceship's momentum to total momentum
+        momentumTotalX += momentum * Math.cos(angle)
+        momentumTotalY += momentum * Math.sin(angle)
 
         // Update values on spaceship
-        this.angle = getAngleBetween({ x: 0, y: 0 }, { x: forceTotalX, y: forceTotalY })
-        this.force = getDistBetween({ x: 0, y: 0 }, { x: forceTotalX, y: forceTotalY })
-        this.x += forceTotalX
-        this.y += forceTotalY
+        this.angle = getAngleBetween({ x: 0, y: 0 }, { x: momentumTotalX, y: momentumTotalY })
+        this.momentum = getDistBetween({ x: 0, y: 0 }, { x: momentumTotalX, y: momentumTotalY })
+        this.x += momentumTotalX
+        this.y += momentumTotalY
     }
 }

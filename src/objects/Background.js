@@ -26,6 +26,5 @@ export default class Background {
         }
     }
 
-    update() {
-    }
+    update() { }
 }

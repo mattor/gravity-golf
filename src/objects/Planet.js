@@ -36,7 +36,5 @@ export default class Planet {
         context.closePath()
     }
 
-    update() {
-        //this.angle += 1
-    }
+    update() { }
 }

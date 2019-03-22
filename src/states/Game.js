@@ -12,6 +12,11 @@ import InfoOverlay from "../objects/InfoOverlay"
 import Planet from "../objects/Planet"
 import Spaceship from "../objects/Spaceship"
 
+// Internal consts
+const updateMs = 10
+const homePlanetColor = "#0095DD"
+const safeSpace = { x: Config.gameWidth / 2, y: Config.gameHeight / 2, radius: 2000 }
+
 export default class Game {
     constructor({
         context,
@@ -31,30 +36,38 @@ export default class Game {
 
         keyboard.onSpacePressed(() => {
             if (this.isGameOver || this.isRunning) {
-                if (this.currentLevel > levels.length - 1) {
-                    this.currentLevel = 0
-                    this.score = 0
-                    this.infoOverlay.score = this.score
-                }
-                this.createLevel(this.currentLevel)
-                this.infoOverlay.message = null
-                this.spaceship.isAdjusting = true
-                this.isGameOver = false
-                this.isRunning = false
+                this.restartLevel()
             } else {
-                this.spaceship.force = this.spaceship.launchForce
-                this.spaceship.angle = this.spaceship.launchAngle
-                this.spaceship.isAdjusting = false
-                this.isRunning = true
-                this.score++
-                this.infoOverlay.score = this.score
-                this.infoOverlay.message = null
+                this.launchSpaceship()
             }
         })
     }
 
+    restartLevel() {
+        if (this.currentLevel > levels.length - 1) {
+            this.currentLevel = 0
+            this.score = 0
+            this.infoOverlay.score = this.score
+        }
+        this.createLevel(this.currentLevel)
+        this.infoOverlay.message = null
+        this.spaceship.isAdjusting = true
+        this.isGameOver = false
+        this.isRunning = false
+    }
+
+    launchSpaceship() {
+        this.spaceship.momentum = this.spaceship.launchMomentum
+        this.spaceship.angle = this.spaceship.launchAngle
+        this.spaceship.isAdjusting = false
+        this.isRunning = true
+        this.score++
+        this.infoOverlay.score = this.score
+        this.infoOverlay.message = null
+    }
+
     run() {
-        setInterval(this.update.bind(this), 10)
+        setInterval(this.update.bind(this), updateMs)
         requestAnimationFrame(this.render.bind(this))
     }
 
@@ -71,16 +84,15 @@ export default class Game {
             } else if (keyboard.rightPressed) {
                 spaceship.launchAngle += Config.angleDelta
             } else if (keyboard.upPressed) {
-                spaceship.launchForce = clamp(spaceship.launchForce + Config.forceDelta, Config.forceMin, Config.forceMax)
+                spaceship.launchMomentum = clamp(spaceship.launchMomentum + Config.momentumDelta, Config.momentumMin, Config.momentumMax)
             } else if (keyboard.downPressed) {
-                spaceship.launchForce = clamp(spaceship.launchForce - Config.forceDelta, Config.forceMin, Config.forceMax)
+                spaceship.launchMomentum = clamp(spaceship.launchMomentum - Config.momentumDelta, Config.momentumMin, Config.momentumMax)
             }
         }
     }
 
     render() {
-        const { renderList } = this
-        renderList.forEach(sprite => sprite.render())
+        this.renderList.forEach(sprite => sprite.render())
         requestAnimationFrame(this.render.bind(this))
     }
 
@@ -120,7 +132,7 @@ export default class Game {
             context,
             x: gamePaddingX + level.goalCol * xDelta,
             y: gamePaddingY + level.goalRow * yDelta,
-            color: "#0095DD",
+            color: homePlanetColor,
         })
         this.renderList.push(this.goal)
         this.planets.push(this.goal)
@@ -130,32 +142,37 @@ export default class Game {
         spaceship.y = gamePaddingY + level.startRow * yDelta
         this.renderList.push(spaceship)
 
-        // infoOverlay
+        // Info overlay
         infoOverlay.levelName = `Level ${num + 1}: ${level.name}`
         this.renderList.push(infoOverlay)
     }
 
     checkCollisions() {
-        const { spaceship, planets, goal, infoOverlay, score } = this
+        const { spaceship, planets, goal, score } = this
 
-        // Stop if goal
+        // Stop if reached home
         if (circlesAreColliding(spaceship, goal)) {
-            infoOverlay.message = this.currentLevel === levels.length - 1 ? `Final score: ${score}` : "You got home!"
-            this.isRunning = false
-            this.isGameOver = true
+            this.stop(this.currentLevel === levels.length - 1 ? `Final score: ${score}` : "You got home!")
             this.currentLevel++
             return
+        }
+
+        // Stop if lost in space
+        if (!circlesAreColliding(spaceship, safeSpace)) {
+            return this.stop("Lost in space")
         }
 
         planets.forEach(planet => {
             // Stop if crash
             if (circlesAreColliding(spaceship, planet)) {
-                infoOverlay.message = `You crashed into ${planet.name}`
-                this.isRunning = false
-                this.isGameOver = true
-                return
+                return this.stop(`You crashed into ${planet.name}`)
             }
         })
+    }
 
+    stop(message) {
+        this.infoOverlay.message = message
+        this.isRunning = false
+        this.isGameOver = true
     }
 }
