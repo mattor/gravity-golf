@@ -5,7 +5,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin")
 module.exports = {
     entry: {
         app: [
-            "@babel/polyfill",
+            "core-js/stable",
+            "regenerator-runtime/runtime",
             path.resolve(__dirname, "src/index.js"),
         ],
     },
@@ -29,9 +30,9 @@ module.exports = {
             {
                 test: /\.js$/,
                 use: [
-                    "babel-loader"
+                    "babel-loader",
                 ],
-                include: path.join(__dirname, "src")
+                include: path.join(__dirname, "src"),
             },
             {
                 test: /\.(png|jpg|gif)$/,
