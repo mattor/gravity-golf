@@ -21,6 +21,7 @@
         "file-loader": "^6.0.0",
         "html-loader": "^1.0.0",
         "html-webpack-plugin": "^4.0.1",
+        "minimist": ">=1.2.2",
         "webpack": "^4.42.1",
         "webpack-cli": "^3.3.11",
         "webpack-dev-server": "^3.10.3"
