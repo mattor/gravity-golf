@@ -52,7 +52,7 @@ export default class Spaceship {
             context.moveTo(x, y)
             context.lineTo(
                 x + Math.cos(launchAngle + Math.PI) * launchLineLength,
-                y + Math.sin(launchAngle + Math.PI) * launchLineLength
+                y + Math.sin(launchAngle + Math.PI) * launchLineLength,
             )
             context.lineWidth = 4
             context.strokeStyle = "#00C0E0"
@@ -64,7 +64,7 @@ export default class Spaceship {
             context.moveTo(x, y)
             context.lineTo(
                 x + Math.cos(angle) * isDebuggingLineLength,
-                y + Math.sin(angle) * isDebuggingLineLength
+                y + Math.sin(angle) * isDebuggingLineLength,
             )
             context.lineWidth = 2
             context.strokeStyle = "#F00"
