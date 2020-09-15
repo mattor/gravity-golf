@@ -4,8 +4,7 @@
     "main": "src/index.js",
     "license": "MIT",
     "scripts": {
-        "build:dev": "webpack --mode development",
-        "build:prod": "webpack --mode production",
+        "build": "webpack --mode production",
         "start": "webpack-dev-server --mode development --watch --open",
         "lint": "eslint . --report-unused-disable-directives --fix"
     },
