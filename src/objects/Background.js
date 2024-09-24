@@ -1,5 +1,3 @@
-import "../assets/bg-space.jpg"
-
 import { gameWidth, gameHeight } from "../const/Config"
 
 export default class Background {
